@@ -10,7 +10,6 @@ import com.example.HealthCareApp.Mapper.RendezVousMapper;
 import com.example.HealthCareApp.Repository.MedcinRepository;
 import com.example.HealthCareApp.Repository.PatientRepository;
 import com.example.HealthCareApp.Repository.RendezVousRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,93 +21,85 @@ public class RendezVousService {
     private final RendezVousRepository repo;
     private final PatientRepository patientRepo;
     private final MedcinRepository medcinRepo;
+    private final RendezVousMapper mapper;
 
-    public RendezVousService(RendezVousRepository repo, PatientRepository patientRepo, MedcinRepository medcinRepo) {
+    public RendezVousService(RendezVousRepository repo,
+                             PatientRepository patientRepo,
+                             MedcinRepository medcinRepo,
+                             RendezVousMapper mapper) {
         this.repo = repo;
         this.patientRepo = patientRepo;
         this.medcinRepo = medcinRepo;
+        this.mapper = mapper;
     }
-
 
     public RendezVousGetDTO save(RendezVousPostDTO dto) {
+        RendezVous rendezVous = mapper.toEntity(dto);
 
-        RendezVous r = new RendezVous();
+        Patient patient = patientRepo.findById(dto.getPatientId()).orElse(null);
+        Medcin medcin = medcinRepo.findById(dto.getMedcinId()).orElse(null);
 
-        r.setDateRendezVous(dto.getDateRendezVous());
-        r.setStatut(dto.getStatut());
+        rendezVous.setPatient(patient);
+        rendezVous.setMedcin(medcin);
 
-        Patient p = patientRepo.findById(dto.getPatientId()).orElse(null);
-        Medcin m = medcinRepo.findById(dto.getMedcinId()).orElse(null);
-
-        r.setPatient(p);
-        r.setMedcin(m);
-
-        RendezVous saved = repo.save(r);
-
-        return RendezVousMapper.toGetDTO(saved);
+        RendezVous saved = repo.save(rendezVous);
+        return mapper.toGetDTO(saved);
     }
 
-
     public List<RendezVousGetDTO> getAll() {
-
         List<RendezVous> list = repo.findAll();
         List<RendezVousGetDTO> result = new ArrayList<>();
 
-        for (RendezVous r : list) {
-            result.add(RendezVousMapper.toGetDTO(r));
+        for (RendezVous rendezVous : list) {
+            RendezVousGetDTO dto = mapper.toGetDTO(rendezVous);
+            result.add(dto);
         }
 
         return result;
     }
 
-
     public RendezVousGetDTO update(int id, RendezVousUpdateDTO dto) {
+        RendezVous rendezVous = repo.findById(id).orElse(null);
 
-        RendezVous r = repo.findById(id).orElse(null);
+        if (rendezVous == null) {
+            return null;
+        }
 
-        if (r == null) return null;
+        mapper.updateRendezVousFromDTO(dto, rendezVous);
 
-        r.setDateRendezVous(dto.getDateRendezVous());
-        r.setStatut(dto.getStatut());
+        Patient patient = patientRepo.findById(dto.getPatientId()).orElse(null);
+        Medcin medcin = medcinRepo.findById(dto.getMedcinId()).orElse(null);
 
-        Patient p = patientRepo.findById(dto.getPatientId()).orElse(null);
-        Medcin m = medcinRepo.findById(dto.getMedcinId()).orElse(null);
+        rendezVous.setPatient(patient);
+        rendezVous.setMedcin(medcin);
 
-        r.setPatient(p);
-        r.setMedcin(m);
-
-        RendezVous updated = repo.save(r);
-
-        return RendezVousMapper.toGetDTO(updated);
+        RendezVous updated = repo.save(rendezVous);
+        return mapper.toGetDTO(updated);
     }
 
-
     public void delete(int id) {
-
         repo.deleteById(id);
     }
 
-
     public List<RendezVousGetDTO> findByPatient(int patientId) {
-
         List<RendezVous> list = repo.findByPatientId(patientId);
         List<RendezVousGetDTO> result = new ArrayList<>();
 
-        for (RendezVous r : list) {
-            result.add(RendezVousMapper.toGetDTO(r));
+        for (RendezVous rendezVous : list) {
+            RendezVousGetDTO dto = mapper.toGetDTO(rendezVous);
+            result.add(dto);
         }
 
         return result;
     }
 
-
     public List<RendezVousGetDTO> findByMedcin(int medcinId) {
-
         List<RendezVous> list = repo.findByMedcinId(medcinId);
         List<RendezVousGetDTO> result = new ArrayList<>();
 
-        for (RendezVous r : list) {
-            result.add(RendezVousMapper.toGetDTO(r));
+        for (RendezVous rendezVous : list) {
+            RendezVousGetDTO dto = mapper.toGetDTO(rendezVous);
+            result.add(dto);
         }
 
         return result;

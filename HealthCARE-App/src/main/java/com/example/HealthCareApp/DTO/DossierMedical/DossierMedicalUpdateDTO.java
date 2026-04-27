@@ -12,4 +12,6 @@ public class DossierMedicalUpdateDTO {
 
     @NotBlank(message = "observation obligatoire ")
     private String observation;
+
+
 }

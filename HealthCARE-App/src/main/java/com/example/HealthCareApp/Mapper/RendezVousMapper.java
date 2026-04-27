@@ -1,27 +1,24 @@
 package com.example.HealthCareApp.Mapper;
 
+
 import com.example.HealthCareApp.DTO.RendezVous.RendezVousGetDTO;
+import com.example.HealthCareApp.DTO.RendezVous.RendezVousPostDTO;
+import com.example.HealthCareApp.DTO.RendezVous.RendezVousUpdateDTO;
 import com.example.HealthCareApp.Entity.RendezVous;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-public class RendezVousMapper {
+@Mapper(componentModel = "spring")
+public interface RendezVousMapper {
 
-    public static RendezVousGetDTO toGetDTO(RendezVous r) {
+    RendezVous toEntity(RendezVousPostDTO dto);
 
-        RendezVousGetDTO dto = new RendezVousGetDTO();
 
-        dto.setId(r.getId());
-        dto.setDateRendezVous(r.getDateRendezVous());
-        dto.setStatut(r.getStatut());
+    @Mapping(source = "patient.nom",target="patientNom")
+    @Mapping(source = "patient.prenom",target = "patientPrenom")
+    @Mapping(source = "medcin.nom",target = "medcinNom")
+    RendezVousGetDTO toGetDTO(RendezVous rendezVous);
 
-        if (r.getPatient() != null) {
-            dto.setPatientNom(r.getPatient().getNom());
-        }
-
-        if (r.getMedcin() != null) {
-            dto.setMedcinNom(r.getMedcin().getNom());
-        }
-
-        return dto;
-    }
-
+    void updateRendezVousFromDTO(RendezVousUpdateDTO dto, @MappingTarget RendezVous rendezVous);
 }

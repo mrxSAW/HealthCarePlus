@@ -2,6 +2,7 @@ package com.example.HealthCareApp.DTO.Patient;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ public class PatientUpdateDTO {
     private String telephone;
 
     @NotNull(message = "date de naissance obligatoire")
+    @Past
     private LocalDate dateNaissance;
 
 }

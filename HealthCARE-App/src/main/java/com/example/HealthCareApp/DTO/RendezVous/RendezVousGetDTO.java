@@ -13,5 +13,6 @@ public class RendezVousGetDTO {
     private String statut;
 
     private String patientNom;
+    private String patientPrenom;
     private String medcinNom;
 }

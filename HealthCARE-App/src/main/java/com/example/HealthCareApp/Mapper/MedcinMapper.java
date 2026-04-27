@@ -2,34 +2,17 @@ package com.example.HealthCareApp.Mapper;
 
 import com.example.HealthCareApp.DTO.Medcin.MedcinGetDTO;
 import com.example.HealthCareApp.DTO.Medcin.MedcinPostDTO;
+import com.example.HealthCareApp.DTO.Medcin.MedcinUpdateDTO;
 import com.example.HealthCareApp.Entity.Medcin;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
-public class MedcinMapper {
+@Mapper(componentModel = "spring")
+public interface MedcinMapper {
 
+    Medcin toEntity(MedcinPostDTO dto);
 
-    public static Medcin toEntity(MedcinPostDTO dto) {
+    MedcinGetDTO toGetDTO(Medcin medcin);
 
-        Medcin m = new Medcin();
-
-        m.setNom(dto.getNom());
-        m.setSpecialite(dto.getSpecialite());
-        m.setEmail(dto.getEmail());
-        m.setTelephone(dto.getTelephone());
-
-        return m;
-    }
-
-
-    public static MedcinGetDTO toGetDTO(Medcin m) {
-
-        MedcinGetDTO dto = new MedcinGetDTO();
-
-        dto.setId(m.getId());
-        dto.setNom(m.getNom());
-        dto.setSpecialite(m.getSpecialite());
-        dto.setEmail(m.getEmail());
-        dto.setTelephone(m.getTelephone());
-
-        return dto;
-    }
+    void updateMedcinFromDTO(MedcinUpdateDTO dto, @MappingTarget Medcin medcin);
 }

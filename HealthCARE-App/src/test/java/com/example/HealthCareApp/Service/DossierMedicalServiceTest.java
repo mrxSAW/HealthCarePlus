@@ -113,14 +113,18 @@ class DossierMedicalServiceTest {
     }
     @Test
     void delete() {
-
         PatientPostDTO p = new PatientPostDTO();
         p.setNom("Delete");
+        p.setPrenom("Test");
+        p.setEmail("delete@test.com");
+        p.setTelephone("0600000000");
+        p.setDateNaissance(LocalDate.of(2000, 1, 1));
 
         PatientGetDTO patient = patientService.save(p);
 
         DossierMedicalPostDTO dto = new DossierMedicalPostDTO();
         dto.setDiagnostic("ToDelete");
+        dto.setObservation("Observation");
         dto.setDateCreation(LocalDate.now());
         dto.setPatientId(patient.getId());
 

@@ -1,24 +1,21 @@
 package com.example.HealthCareApp.Mapper;
 
 import com.example.HealthCareApp.DTO.DossierMedical.DossierMedicalGetDTO;
+import com.example.HealthCareApp.DTO.DossierMedical.DossierMedicalPostDTO;
+import com.example.HealthCareApp.DTO.DossierMedical.DossierMedicalUpdateDTO;
 import com.example.HealthCareApp.Entity.DossierMedical;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-public class DossierMedicalMapper {
+@Mapper(componentModel = "spring")
+public interface DossierMedicalMapper {
 
-    public static DossierMedicalGetDTO toGetDTO(DossierMedical d) {
+    DossierMedical toEntity(DossierMedicalPostDTO dto);
 
-        DossierMedicalGetDTO dto = new DossierMedicalGetDTO();
+    @Mapping(source = "patient.nom",target = "patientNom")
+    @Mapping(source = "patient.prenom",target = "patientPrenom")
+    DossierMedicalGetDTO toGetDTO(DossierMedical dossierMedical);
 
-        dto.setId(d.getId());
-        dto.setDiagnostic(d.getDiagnostic());
-        dto.setObservation(d.getObservation());
-        dto.setDateCreation(d.getDateCreation());
-
-        if (d.getPatient() != null) {
-            dto.setPatientNom(d.getPatient().getNom());
-            dto.setPatientPrenom(d.getPatient().getPrenom());
-        }
-
-        return dto;
-    }
+    void updateDossierMedicalFromDTO(DossierMedicalUpdateDTO dto, @MappingTarget DossierMedical dossierMedical);
 }

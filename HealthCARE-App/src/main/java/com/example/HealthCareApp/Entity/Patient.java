@@ -19,7 +19,7 @@ public class Patient {
     private String telephone;
     private LocalDate dateNaissance;
 
-    @OneToOne(mappedBy = "patient" , cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "patient" )
     private DossierMedical dossierMedical;
 
 

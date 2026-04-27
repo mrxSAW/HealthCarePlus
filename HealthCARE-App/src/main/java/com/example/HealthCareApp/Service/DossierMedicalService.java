@@ -1,5 +1,6 @@
 package com.example.HealthCareApp.Service;
 
+
 import com.example.HealthCareApp.DTO.DossierMedical.DossierMedicalGetDTO;
 import com.example.HealthCareApp.DTO.DossierMedical.DossierMedicalPostDTO;
 import com.example.HealthCareApp.DTO.DossierMedical.DossierMedicalUpdateDTO;
@@ -17,91 +18,76 @@ import java.util.List;
 
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class DossierMedicalService {
 
     private final DossierMedicalRepository repo;
     private final PatientRepository patientRepo;
+    private final DossierMedicalMapper mapper;
 
-    public DossierMedicalService(DossierMedicalRepository repo, PatientRepository patientRepo) {
-        this.repo = repo;
-        this.patientRepo = patientRepo;
-    }
+
+
 
 
     public DossierMedicalGetDTO save(DossierMedicalPostDTO dto) {
+        DossierMedical dossier = mapper.toEntity(dto);
 
-        DossierMedical d = new DossierMedical();
+        Patient patient = patientRepo.findById(dto.getPatientId()).orElse(null);
+        dossier.setPatient(patient);
 
-        d.setDiagnostic(dto.getDiagnostic());
-        d.setObservation(dto.getObservation());
-        d.setDateCreation(dto.getDateCreation());
-
-        Patient p = patientRepo.findById(dto.getPatientId()).orElse(null);
-
-        d.setPatient(p);
-        if (p != null) {
-            p.setDossierMedical(d);
-        }
-
-        DossierMedical saved = repo.save(d);
-
-        return DossierMedicalMapper.toGetDTO(saved);
+        DossierMedical saved = repo.save(dossier);
+        return mapper.toGetDTO(saved);
     }
 
-
     public List<DossierMedicalGetDTO> getAll() {
-
-        List<DossierMedical> list = repo.findAll();
+        List<DossierMedical> dossiers = repo.findAll();
         List<DossierMedicalGetDTO> result = new ArrayList<>();
 
-        for (DossierMedical d : list) {
-            result.add(DossierMedicalMapper.toGetDTO(d));
+        for (DossierMedical dossier : dossiers) {
+            DossierMedicalGetDTO dto = mapper.toGetDTO(dossier);
+            result.add(dto);
         }
 
         return result;
     }
 
-
     public DossierMedicalGetDTO getById(int id) {
+        DossierMedical dossier = repo.findById(id).orElse(null);
 
-        DossierMedical d = repo.findById(id).orElse(null);
+        if (dossier == null) {
+            return null;
+        }
 
-        if (d == null) return null;
-
-        return DossierMedicalMapper.toGetDTO(d);
+        return mapper.toGetDTO(dossier);
     }
-
 
     public DossierMedicalGetDTO update(int id, DossierMedicalUpdateDTO dto) {
+        DossierMedical dossier = repo.findById(id).orElse(null);
 
-        DossierMedical d = repo.findById(id).orElse(null);
+        if (dossier == null) {
+            return null;
+        }
 
-        if (d == null) return null;
+        mapper.updateDossierMedicalFromDTO(dto, dossier);
 
-        d.setDiagnostic(dto.getDiagnostic());
-        d.setObservation(dto.getObservation());
-
-        DossierMedical updated = repo.save(d);
-
-        return DossierMedicalMapper.toGetDTO(updated);
+        DossierMedical updated = repo.save(dossier);
+        return mapper.toGetDTO(updated);
     }
 
-
-    @Transactional
     public void delete(int id) {
+        DossierMedical dossier = repo.findById(id).orElse(null);
 
-        DossierMedical d = repo.findById(id).orElse(null);
+        if (dossier != null) {
+            Patient patient = dossier.getPatient();
 
-        if (d == null) {
-            return;
+            if (patient != null) {
+                patient.setDossierMedical(null);
+                dossier.setPatient(null);
+            }
+
+            repo.delete(dossier);
+            repo.flush();
         }
-
-        Patient p = d.getPatient();
-
-        if (p != null) {
-            p.setDossierMedical(null);
-        }
-
-        repo.delete(d);
     }
 }

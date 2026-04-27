@@ -16,64 +16,60 @@ import java.util.List;
 public class PatientService {
 
     private final PatientRepository repo;
+    private final PatientMapper mapper;
 
-    public PatientService(PatientRepository repo) {
+    public PatientService(PatientRepository repo, PatientMapper mapper) {
         this.repo = repo;
+        this.mapper = mapper;
     }
-
 
     public PatientGetDTO save(PatientPostDTO dto) {
+        Patient patient = mapper.toEntity(dto);
+        Patient savedPatient = repo.save(patient);
+        PatientGetDTO result = mapper.toGetDTO(savedPatient);
 
-        Patient p = PatientMapper.toEntity(dto);
-        Patient saved = repo.save(p);
-
-        return PatientMapper.toGetDTO(saved);
+        return result;
     }
-
 
     public List<PatientGetDTO> getAll() {
-
         List<Patient> patients = repo.findAll();
-        List<PatientGetDTO> list = new ArrayList<>();
+        List<PatientGetDTO> result = new ArrayList<>();
 
-        for (Patient p : patients) {
-            list.add(PatientMapper.toGetDTO(p));
+        for (Patient patient : patients) {
+            PatientGetDTO dto = mapper.toGetDTO(patient);
+            result.add(dto);
         }
 
-        return list;
+        return result;
     }
-
 
     public PatientGetDTO getById(int id) {
+        Patient patient = repo.findById(id).orElse(null);
 
-        Patient p = repo.findById(id).orElse(null);
+        if (patient == null) {
+            return null;
+        }
 
-        if (p == null) return null;
-
-        return PatientMapper.toGetDTO(p);
+        PatientGetDTO result = mapper.toGetDTO(patient);
+        return result;
     }
-
 
     public PatientGetDTO update(int id, PatientUpdateDTO dto) {
+        Patient patient = repo.findById(id).orElse(null);
 
-        Patient p = repo.findById(id).orElse(null);
+        if (patient == null) {
+            return null;
+        }
 
-        if (p == null) return null;
+        mapper.updatePatientFromDTO(dto, patient);
 
-        p.setNom(dto.getNom());
-        p.setPrenom(dto.getPrenom());
-        p.setEmail(dto.getEmail());
-        p.setTelephone(dto.getTelephone());
-        p.setDateNaissance(dto.getDateNaissance());
+        Patient updatedPatient = repo.save(patient);
+        PatientGetDTO result = mapper.toGetDTO(updatedPatient);
 
-        Patient updated = repo.save(p);
-
-        return PatientMapper.toGetDTO(updated);
+        return result;
     }
 
-
     public void delete(int id) {
-
         repo.deleteById(id);
     }
 }
