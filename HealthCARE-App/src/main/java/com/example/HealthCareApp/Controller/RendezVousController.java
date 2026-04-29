@@ -22,14 +22,11 @@ public class RendezVousController {
     @PostMapping
     public RendezVousGetDTO create(@Valid @RequestBody RendezVousPostDTO dto) {
 
-
-
         return service.save(dto);
     }
 
     @GetMapping
     public List<RendezVousGetDTO> list() {
-
 
 
         return service.getAll();

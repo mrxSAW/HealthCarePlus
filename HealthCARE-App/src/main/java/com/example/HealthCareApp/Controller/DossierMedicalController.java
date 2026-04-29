@@ -39,8 +39,7 @@ public class DossierMedicalController {
 
 
     @PutMapping("/{id}")
-    public DossierMedicalGetDTO update(@PathVariable int id,
-           @Valid @RequestBody DossierMedicalUpdateDTO dto) {
+    public DossierMedicalGetDTO update(@PathVariable int id, @Valid @RequestBody DossierMedicalUpdateDTO dto) {
 
         return service.update(id, dto);
     }

@@ -5,7 +5,7 @@ CREATE TABLE patient (
                          email VARCHAR(255),
                          telephone VARCHAR(255),
                          date_naissance DATE
-);
+                        );
 
 CREATE TABLE dossier_medical (
                                  id BIGINT AUTO_INCREMENT PRIMARY KEY,

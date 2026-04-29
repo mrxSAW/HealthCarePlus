@@ -23,10 +23,7 @@ public class RendezVousService {
     private final MedcinRepository medcinRepo;
     private final RendezVousMapper mapper;
 
-    public RendezVousService(RendezVousRepository repo,
-                             PatientRepository patientRepo,
-                             MedcinRepository medcinRepo,
-                             RendezVousMapper mapper) {
+    public RendezVousService(RendezVousRepository repo, PatientRepository patientRepo, MedcinRepository medcinRepo, RendezVousMapper mapper) {
         this.repo = repo;
         this.patientRepo = patientRepo;
         this.medcinRepo = medcinRepo;
