@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -21,7 +22,25 @@ public interface RendezVousRepository extends JpaRepository<RendezVous,Integer> 
     List<RendezVous> findByMedcinId(@Param("medcinId") int medcinId);
 
 
-  
+    /*
+         @Query(value = "SELECT * FROM rendez_vous WHERE medcin_id = :medcinId", nativeQuery = true)
+          List<RendezVous> findByMedcinId(@Param("medcinId") int medcinId);
+
+    */
+
+
+
+
+
+
 
 
 }
+
+
+
+
+
+
+
+
