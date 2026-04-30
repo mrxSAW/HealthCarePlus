@@ -13,20 +13,15 @@ public interface RendezVousRepository extends JpaRepository<RendezVous,Integer> 
 
 
 
-    // Derived Query
+
     List<RendezVous> findByPatientId(int patientId);
 
-    // JPQL
+
     @Query(value = "SELECT r FROM RendezVous r WHERE r.medcin.id = :medcinId",nativeQuery = false)
     List<RendezVous> findByMedcinId(@Param("medcinId") int medcinId);
 
 
-    /*
-         @Query(value = "SELECT * FROM rendez_vous WHERE medcin_id = :medcinId", nativeQuery = true)
-          List<RendezVous> findByMedcinId(@Param("medcinId") int medcinId);
-
-    */
-
+  
 
 
 }
