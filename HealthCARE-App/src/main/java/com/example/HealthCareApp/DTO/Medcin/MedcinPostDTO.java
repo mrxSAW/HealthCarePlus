@@ -1,5 +1,6 @@
 package com.example.HealthCareApp.DTO.Medcin;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class MedcinPostDTO {
     @NotBlank(message = "specialité obligatoire ")
     private String specialite;
 
-    @NotBlank(message = "email obligatoire")
+    @Email(message = "email obligatoire")
     private String email;
 
     @NotBlank(message = "telephone obligatoire")

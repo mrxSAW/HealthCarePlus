@@ -1,12 +1,11 @@
 package com.example.HealthCareApp.Entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.AnyDiscriminatorImplicitValues;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -19,5 +18,6 @@ public class Medcin {
     private String specialite;
     private String email;
     private String telephone;
-
+    @OneToMany(mappedBy = "medcin")
+    private List<RendezVous> rendezVous;
 }

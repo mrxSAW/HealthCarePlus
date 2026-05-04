@@ -1,5 +1,6 @@
 package com.example.HealthCareApp.DTO.Patient;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -15,7 +16,7 @@ public class PatientPostDTO {
     @NotBlank(message = "prenom obligatoire")
     private String prenom;
 
-    @NotBlank(message = "email obligatoire")
+    @Email(message = "email obligatoire")
     private String email;
 
     @NotBlank(message = "telephone obligatoire")
