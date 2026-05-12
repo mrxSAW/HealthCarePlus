@@ -35,7 +35,7 @@ L’objectif est de proposer une architecture claire, maintenable et conforme au
 ![modifier.png](Diagrammes/sequence/modifier.png)
 
 
-
+![85e9cc06-8e03-4449-9202-25156275ca40.png](Diagrammes/85e9cc06-8e03-4449-9202-25156275ca40.png)
 
 Technologies utilisées
 Java 17 / 21
