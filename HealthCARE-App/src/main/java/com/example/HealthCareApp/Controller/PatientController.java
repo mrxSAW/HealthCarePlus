@@ -4,6 +4,7 @@ import com.example.HealthCareApp.DTO.Patient.PatientGetDTO;
 import com.example.HealthCareApp.DTO.Patient.PatientPostDTO;
 import com.example.HealthCareApp.DTO.Patient.PatientUpdateDTO;
 import com.example.HealthCareApp.Service.PatientService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/patients")
+@SecurityRequirement(name = "bearerAuth")
 public class PatientController {
 
     private final PatientService service;

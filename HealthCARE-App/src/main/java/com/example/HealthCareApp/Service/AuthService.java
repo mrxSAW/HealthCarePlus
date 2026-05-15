@@ -3,6 +3,7 @@ package com.example.HealthCareApp.Service;
 import com.example.HealthCareApp.DTO.Auth.AuthResponse;
 import com.example.HealthCareApp.DTO.Auth.LoginRequest;
 import com.example.HealthCareApp.DTO.Auth.RegisterRequest;
+import com.example.HealthCareApp.Entity.Role;
 import com.example.HealthCareApp.Entity.User;
 import com.example.HealthCareApp.Repository.UserRepository;
 import com.example.HealthCareApp.Security.JwtService;
@@ -37,6 +38,12 @@ public class AuthService {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        if (request.getRole() == null) {
+            user.setRole(Role.PATIENT);
+        } else {
+            user.setRole(request.getRole());
+        }
 
         repo.save(user);
 

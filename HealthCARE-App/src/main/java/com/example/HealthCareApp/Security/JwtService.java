@@ -19,6 +19,7 @@ public class JwtService {
     private long expiration;
 
     private SecretKey getKey() {
+
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
@@ -26,20 +27,13 @@ public class JwtService {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
 
-        return Jwts.builder()
-                .subject(email)
-                .issuedAt(now)
-                .expiration(expiryDate)
-                .signWith(getKey())
-                .compact();
+        return Jwts.builder().subject(email).issuedAt(now).expiration(expiryDate)
+                .signWith(getKey()).compact();
     }
 
     public String extractEmail(String token) {
-        Claims claims = Jwts.parser()
-                .verifyWith(getKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        Claims claims = Jwts.parser().verifyWith(getKey()).build()
+                .parseSignedClaims(token).getPayload();
 
         return claims.getSubject();
     }
@@ -53,3 +47,6 @@ public class JwtService {
         }
     }
 }
+
+
+

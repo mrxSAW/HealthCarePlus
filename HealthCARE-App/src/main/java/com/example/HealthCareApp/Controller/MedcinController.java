@@ -4,6 +4,7 @@ import com.example.HealthCareApp.DTO.Medcin.MedcinGetDTO;
 import com.example.HealthCareApp.DTO.Medcin.MedcinPostDTO;
 import com.example.HealthCareApp.DTO.Medcin.MedcinUpdateDTO;
 import com.example.HealthCareApp.Service.MedcinService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/medcins")
+@SecurityRequirement(name = "bearerAuth")
 public class MedcinController {
 
     private final MedcinService service;
